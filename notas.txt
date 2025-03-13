@@ -1,37 +1,35 @@
-Paso 1. 
-
-
+Paso 1. Configurar Entorno Local
+    Istalar:Python 3.x,
+            AWS CLI,
+            pip install boto3  -> import boto3
+            Git (configurar)
+    En VSc: extensiones: Python (verificar interprete: ultima Version)
+                        AWS toolkit (configurar credeciales)
+                        git (GitLens)      
 Paso 2. Carga bucket s3
-cree archivo .csv con los datos requeridos
-configuré aws y demas credenciales en mi consola VSc
-configuré servicio de CloudWhatch para advertencias de gastos
-aseguré mi usuario root con MFA
-creé un usuario IAM solo con permisos sobre s3
-creé claves de accesos para este usuario IAM
-creé un bucket desde AWS y cargué el archivo csv a travez de VS mediante las claves de accesos del usuario IAM
-creé un bucket de prueba a travez de la consola VSc
-DATOS:
-    - example_data.csv (archivo.csv)
-    - > aws configure
-        - clave de acceso
-        - clave secreta
-        - region
-        - formato
-    - us_s3 (usuario IAM)
-    - telecom-datalake-s3 (bucket)
-    - aws s3 cp example_data.csv s3://telecom-datalake/data/ (carga en bucket)
-    - aws s3 ls s3://telecom-datalake/data/  (verificar carga)
-    - aws s3api create-bucket --bucket telecom-datalake-prueba2 --region us-east-1  (crear por consola)
+    cree archivo 'example_data.csv' con los datos requeridos
+    configuré servicio de CloudWhatch en AWS para advertencias de gastos
+    aseguré mi usuario root con MFA
+    creé un usuario IAM (user_s3-carga-data) solo con permisos personalizado para cargas en s3 (permisos_de_carga_en_s3.json)
+        creé claves de accesos para este usuario IAM, y lo configuré para VSc
+    creé un bucket desde VS code y subí el archivo 'example_data.csv' a travez de la consola de VS 
+        'aws s3 cp example_data.csv s3://telecom-datalake-first/data/'
+    creé un bucket de prueba a travez de AWS (bucket-prueba-mario)
 
-Paso 3.
+Paso 3.Configurar AWS Glue
 a) AWS Glue, Crear Crawler
+Configuré un rol de IAM con permisos sobre s3, Glue y IAM (para poder crear rol de glue)
 Usé el servicio de AWS Glue
 Creé un Crawler que apunte al archivo de mi bucket s3
-Configuré un rol de IAM con permisos sobre s3 y Glue
 Creé la base de datos de salida
 Revisé y Ejecuté el Crawler
-b) Creé una carpeta en mi bucket donde guardar un script de glue_etl_script
-creé el script .py en VSc y lo guardé en el destino creado.
+b) Creé una carpeta en mi bucket donde guardar un script (glue_etl_script.py)
+creé el script .py en VSc y lo subí en el destino creado atravez de AWS CLI.
+    > aws s3 cp glue_etl_script.py s3://telecom-datalake-first/scripts/
+
+creé carpeta 'transformed_data' como destino para el proximo paso.
+
+
 
 DATOS: 
     - crawler-clientes-s3  (crawler)
